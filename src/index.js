@@ -68,57 +68,77 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+  // const pizzas = [];
+  const numPizzas = pizzas.length;
   return (
+
     <main className="menu">
       <h2>Our Menu </h2>
-      <Pizza
-       name='Pizza Spinachi'
-        ingredients='Tomato, mozarella, spinach, and ricotta cheese' 
-        photoName='pizzas/spinaci.jpg'
-         price={24} />
-      
-      <Pizza
-       name='Pizza Funghi'
-        ingredients='Tomato, mozarella, mushrooms, and onion' 
-        photoName='pizzas/funghi.jpg'
-         price={23} />
 
-      <Pizza
-       name='Pizza Focaccia'
-        ingredients='Bread with italian olive oil and rosemary' 
-        photoName='pizzas/focaccia.jpg'
-         price={40} />
+    
+    {numPizzas > 0 ? (
+      <>
+      <p>Authentic Italian Cuisine and creative dishes to choose from. All from our stone oven, all organic all delicious.</p>
+      <ul className="pizzas">
+      {pizzas.map((pizza) => (
+        <Pizza pizzaObj={pizza} key={pizza.name}/>
+      ))};
+    </ul>
+      </>
+    ) : <p>We are working on our menu, please come back later</p> }
+    {/* <Pizza
+      name='Pizza Spinachi'
+      ingredients='Tomato, mozarella, spinach, and ricotta cheese' 
+      photoName='pizzas/spinaci.jpg'
+        price={24} />
+     
+    <Pizza
+      name='Pizza Funghi'
+      ingredients='Tomato, mozarella, mushrooms, and onion' 
+      photoName='pizzas/funghi.jpg'
+        price={23} />
+
+    <Pizza
+      name='Pizza Focaccia'
+      ingredients='Bread with italian olive oil and rosemary' 
+      photoName='pizzas/focaccia.jpg'
+        price={40} />
 
 <Pizza
-       name='Pizza Margherita'
-        ingredients='Tomato and mozarella' 
-        photoName='pizzas/margherita.jpg'
-         price={30} />
+      name='Pizza Margherita'
+      ingredients='Tomato and mozarella' 
+      photoName='pizzas/margherita.jpg'
+        price={30} />
 
 <Pizza
-       name='Pizza  Salamino'
-        ingredients='Tomato, mozarella, and pepperoni' 
-        photoName='pizzas/salamino.jpg'
-         price={15}/>
+      name='Pizza  Salamino'
+      ingredients='Tomato, mozarella, and pepperoni' 
+      photoName='pizzas/salamino.jpg'
+        price={15}/>
 
 <Pizza
-       name='Pizza Prosciutto'
-        ingredients='Tomato, mozarella, ham, aragula, and burrata cheese' 
-        photoName='pizzas/prosciutto.jpg'
-         price={20} />
+      name='Pizza Prosciutto'
+      ingredients='Tomato, mozarella, ham, aragula, and burrata cheese' 
+      photoName='pizzas/prosciutto.jpg'
+        price={20} /> */}
     </main>
   );
 }
-function Pizza(props) {
+function Pizza({pizzaObj}) {
+ console.log(pizzaObj);
+
+// if(pizzaObj.soldOut) return null;
+
   return (
-    <div className="pizza">
-      <img src={props.photoName} alt={props.name} />
+  <li className={`pizza ${pizzaObj.soldOut ? 'sold-out' : ""}`}>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
       <div>
-      <h3>{props.name}</h3>
-      <p>{props.ingredients}</p>
-      <span>{props.price}</span>
+      <h3>{pizzaObj.name}</h3>
+      <p>{pizzaObj.ingredients}</p>
+      <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price}</span>
       </div>
-    </div>
+    </li>
   );
 }
 function Footer() {
@@ -131,14 +151,30 @@ function Footer() {
   // if (hour >= openHour && hour <= closeHour) alert("We're currently open!");
   // else alert("Sorry we are closed!");
 
+// if(!isOpen) 
+//   return (
+//     <p>We are currently closed but we are happy to welcome you between {openHour}:00 and {closeHour}:00</p>
+//   );
+
   return (
-    <footer className="footer">{new Date().toLocaleTimeString()}. We're currently open</footer>
+    <footer className="footer">
+
+      {isOpen ? (
+      <Order closeHour={closeHour} openHour={openHour}/>
+        ) : <p>We are happy to welcome you between {openHour}:00 and {closeHour}:00</p>}
+   
+      </footer>
   );
 
   // return React.createElement("footer", null, "We're currently open");
 }
 
-
+function Order({ closeHour, openHour}) {
+  return  <div className="order"> 
+  <p>We're open from {openHour}:00 until {closeHour}:00, Come visit us or order online</p>
+  <button classNmae="btn">Order</button>
+  </div>
+}
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
